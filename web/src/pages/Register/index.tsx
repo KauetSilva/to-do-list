@@ -1,27 +1,72 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
-import { Eye, EyeSlash, Moon, Sun } from "phosphor-react";
+import { useLanguage } from "../../hooks/useLanguage";
+import {
+  Eye,
+  EyeSlash,
+  Moon,
+  Sun,
+  Translate,
+  CheckCircle,
+  X,
+  Warning,
+  Info,
+  UserPlus,
+} from "phosphor-react";
 
 interface RegisterData {
-  name: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
+}
+
+interface Toast {
+  id: string;
+  type: "success" | "error" | "info" | "warning";
+  message: string;
+  duration?: number;
 }
 
 export function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [registerData, setRegisterData] = useState<RegisterData>({
-    name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [toasts, setToasts] = useState<Toast[]>([]);
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { t, toggleLanguage, language } = useLanguage();
+
+  // Show toast notification
+  const showToast = (
+    type: "success" | "error" | "info" | "warning",
+    message: string,
+    duration = 3000
+  ) => {
+    const id = Date.now().toString();
+    const newToast: Toast = { id, type, message, duration };
+    setToasts((prevToasts) => [...prevToasts, newToast]);
+
+    if (duration > 0) {
+      setTimeout(() => {
+        setToasts((prevToasts) =>
+          prevToasts.filter((toast) => toast.id !== id)
+        );
+      }, duration);
+    }
+  };
+
+  // Remove a specific toast
+  const removeToast = (id: string) => {
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+  };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,19 +75,21 @@ export function Register() {
 
     // Validations
     if (registerData.password !== registerData.confirmPassword) {
-      setErrorMessage("Passwords don't match");
+      setErrorMessage(t("passwordsDontMatch"));
+      showToast("error", t("passwordsDontMatch"));
       setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:8000/user/register", {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
+      const response = await fetch(`${apiUrl}/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: registerData.name,
+          username: registerData.username,
           email: registerData.email,
           password: registerData.password,
         }),
@@ -51,17 +98,25 @@ export function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        // Redirect to login after successful registration
-        navigate("/login");
+        // Armazenar o token retornado pela API
+        localStorage.setItem("@todo:token", data.token);
+        showToast("success", t("signUpSuccess"));
+
+        // Curto delay para permitir que o usuário veja o toast de sucesso
+        setTimeout(() => {
+          // Redireciona para a página inicial (tasks) após registro bem-sucedido
+          navigate("/tasks");
+        }, 1500);
       } else {
-        throw new Error(data.message || "Registration failed");
+        throw new Error(data.message || t("registrationFailed"));
       }
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
       } else {
-        setErrorMessage("Registration failed");
+        setErrorMessage(t("registrationFailed"));
       }
+      showToast("error", t("signUpFailed"));
       console.error("Registration failed:", error);
     } finally {
       setLoading(false);
@@ -69,25 +124,91 @@ export function Register() {
   }
 
   return (
-    <div className="min-h-screen h-screen w-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 overflow-hidden">
-      <button
-        onClick={toggleTheme}
-        className="absolute top-4 right-4 p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300"
-      >
-        {theme === "dark" ? (
-          <Sun size={24} className="text-yellow-500" />
-        ) : (
-          <Moon size={24} className="text-gray-700" />
-        )}
-      </button>
+    <div className="min-h-screen h-screen w-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 overflow-hidden relative">
+      {/* Toast Container */}
+      <div className="fixed top-4 right-4 z-50 flex flex-col space-y-2 w-80 max-w-[90%]">
+        {toasts.map((toast) => (
+          <div
+            key={toast.id}
+            className={`flex items-center justify-between p-3 rounded-lg shadow-lg transition-all duration-300 ${
+              toast.type === "success"
+                ? "bg-green-100 text-green-800"
+                : toast.type === "error"
+                ? "bg-red-100 text-red-800"
+                : toast.type === "warning"
+                ? "bg-yellow-100 text-yellow-800"
+                : "bg-blue-100 text-blue-800"
+            }`}
+          >
+            <div className="flex items-center">
+              {toast.type === "success" ? (
+                <CheckCircle className="mr-2" size={20} weight="fill" />
+              ) : toast.type === "error" ? (
+                <X className="mr-2" size={20} weight="fill" />
+              ) : toast.type === "warning" ? (
+                <Warning className="mr-2" size={20} weight="fill" />
+              ) : (
+                <Info className="mr-2" size={20} weight="fill" />
+              )}
+              <span className="text-sm">{toast.message}</span>
+            </div>
+            <button
+              onClick={() => removeToast(toast.id)}
+              className={`p-1 rounded-full hover:bg-opacity-80 ${
+                toast.type === "success"
+                  ? "bg-green-200 text-green-800"
+                  : toast.type === "error"
+                  ? "bg-red-200 text-red-800"
+                  : toast.type === "warning"
+                  ? "bg-yellow-200 text-yellow-800"
+                  : "bg-blue-200 text-blue-800"
+              }`}
+            >
+              <X size={16} />
+            </button>
+          </div>
+        ))}
+      </div>
 
-      <div className="w-full max-w-md p-8 space-y-8 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl transform hover:scale-[1.01] transition-all duration-300">
+      <div className="absolute top-4 right-4 flex space-x-2">
+        <button
+          onClick={toggleLanguage}
+          className="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300"
+          title={
+            language === "pt" ? "Switch to English" : "Mudar para Português"
+          }
+        >
+          <Translate
+            size={24}
+            className="text-purple-600 dark:text-purple-400"
+          />
+        </button>
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          {theme === "dark" ? (
+            <Sun size={24} className="text-yellow-500" />
+          ) : (
+            <Moon size={24} className="text-gray-700" />
+          )}
+        </button>
+      </div>
+
+      <div className="w-full max-w-md mx-4 p-6 sm:p-8 space-y-4 sm:space-y-6 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl transform hover:scale-[1.01] transition-all duration-300">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-            Create Account
+          <div className="flex justify-center mb-3 sm:mb-4">
+            <UserPlus
+              size={40}
+              className="text-purple-600 dark:text-purple-400 sm:h-12 sm:w-12"
+              weight="duotone"
+            />
+          </div>
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+            {t("createAccount")}
           </h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Sign up to start managing your tasks
+          <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400">
+            {t("signUpToManageTasks")}
           </p>
         </div>
 
@@ -97,24 +218,24 @@ export function Register() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-6">
           <div>
             <label
               htmlFor="name"
               className="text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Full Name
+              {t("username")}
             </label>
             <input
               id="name"
               type="text"
               required
-              value={registerData.name}
+              value={registerData.username}
               onChange={(e) =>
-                setRegisterData({ ...registerData, name: e.target.value })
+                setRegisterData({ ...registerData, username: e.target.value })
               }
-              className="mt-1 block w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-purple-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-sm dark:text-white"
-              placeholder="Enter your full name"
+              className="mt-1 block w-full px-4 py-2 sm:py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-purple-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-sm dark:text-white"
+              placeholder={t("username")}
             />
           </div>
 
@@ -123,7 +244,7 @@ export function Register() {
               htmlFor="email"
               className="text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Email
+              {t("email")}
             </label>
             <input
               id="email"
@@ -133,8 +254,8 @@ export function Register() {
               onChange={(e) =>
                 setRegisterData({ ...registerData, email: e.target.value })
               }
-              className="mt-1 block w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-purple-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-sm dark:text-white"
-              placeholder="Enter your email"
+              className="mt-1 block w-full px-4 py-2 sm:py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-purple-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-sm dark:text-white"
+              placeholder={t("enterEmail")}
             />
           </div>
 
@@ -143,7 +264,7 @@ export function Register() {
               htmlFor="password"
               className="text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Password
+              {t("password")}
             </label>
             <div className="relative mt-1">
               <input
@@ -154,8 +275,8 @@ export function Register() {
                 onChange={(e) =>
                   setRegisterData({ ...registerData, password: e.target.value })
                 }
-                className="block w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-purple-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-sm dark:text-white"
-                placeholder="Create a password"
+                className="block w-full px-4 py-2 sm:py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-purple-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-sm dark:text-white"
+                placeholder={t("createPassword")}
               />
               <button
                 type="button"
@@ -179,7 +300,7 @@ export function Register() {
               htmlFor="confirmPassword"
               className="text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Confirm Password
+              {t("confirmPassword")}
             </label>
             <div className="relative mt-1">
               <input
@@ -193,8 +314,8 @@ export function Register() {
                     confirmPassword: e.target.value,
                   })
                 }
-                className="block w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-purple-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-sm dark:text-white"
-                placeholder="Confirm your password"
+                className="block w-full px-4 py-2 sm:py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-purple-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-sm dark:text-white"
+                placeholder={t("confirmYourPassword")}
               />
             </div>
           </div>
@@ -203,21 +324,21 @@ export function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
+              className="w-full flex justify-center py-2 sm:py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
             >
-              {loading ? "Creating account..." : "Create account"}
+              {loading ? t("creatingAccount") : t("createAccount")}
             </button>
           </div>
         </form>
 
-        <div className="text-center">
+        <div className="text-center mt-4">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Already have an account?{" "}
+            {t("alreadyHaveAccount")}{" "}
             <a
               href="/login"
               className="font-medium text-purple-600 hover:text-purple-500 dark:text-purple-400 dark:hover:text-purple-300"
             >
-              Sign in
+              {t("signIn")}
             </a>
           </p>
         </div>

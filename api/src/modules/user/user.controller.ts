@@ -29,7 +29,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @UsePipes(ValidationPipe)
-  @Post()
+  @Post('register')
   @ApiResponse({ type: ResponseCreateUserDTO, description: 'user' })
   @ApiBody({ type: CreateUserDTO })
   async createUser(@Body() createUser: CreateUserDTO): Promise<any> {
