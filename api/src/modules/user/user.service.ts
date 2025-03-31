@@ -42,9 +42,16 @@ export class UserService {
         password: passwordHash,
       },
     });
+
+    const userWithoutPassword = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      createdAt: user.createdAt,
+    };
     
     const { token } = await this.generateToken(user);
-    return { ...user, token };
+    return { ...userWithoutPassword, token };
   }
 
   async getAllUsers(): Promise<UserWithoutPassword[]> {
@@ -82,12 +89,12 @@ export class UserService {
     });
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('invalidCredentials');
     }
 
     const isPasswordValid = await compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('invalidCredentials');
     }
 
     return this.generateToken(user);

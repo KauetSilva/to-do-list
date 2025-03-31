@@ -1,8 +1,9 @@
 {
-  "name": "web",
+  "name": "front-todo-list",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Clecio Kauet Silva de Araújo",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
