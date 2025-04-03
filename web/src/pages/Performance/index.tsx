@@ -74,7 +74,7 @@ export function Performance() {
     try {
       const token = localStorage.getItem("@todo:token");
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
-      const response = await fetch(`${apiUrl}/tasks`, {	
+      const response = await fetch(`${apiUrl}/tasks`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -363,7 +363,7 @@ export function Performance() {
                           task.completed ? "bg-green-500" : "bg-red-500"
                         }`}
                       />
-                      <div className="flex-1">
+                      <div className="flex-1 sm:max-w-none max-w-[200px]">
                         <span
                           className={`text-gray-900 dark:text-white ${
                             task.completed
