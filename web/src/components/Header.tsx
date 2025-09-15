@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
 import { useLanguage } from "../hooks/useLanguage";
@@ -13,6 +13,8 @@ import {
   ArrowLeft,
   ListChecks,
   Sparkle,
+  List,
+  X,
 } from "phosphor-react";
 
 interface HeaderProps {
@@ -32,6 +34,7 @@ export function Header({
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { t, toggleLanguage, language } = useLanguage();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Check if user is authenticated
   React.useEffect(() => {
@@ -103,14 +106,14 @@ export function Header({
       <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 opacity-50"></div>
 
       <div className="relative w-full px-4 sm:px-6 lg:px-8">
-        {/* Top section with title and controls */}
+        {/* Main header bar */}
         <div className="flex items-center justify-between py-4">
-          {/* Left side - Title and back button */}
-          <div className="flex items-center space-x-4">
+          {/* Left side - Logo, title and back button */}
+          <div className="flex items-center space-x-3">
             {showBackButton && (
               <button
                 onClick={handleBackClick}
-                className="group p-2 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+                className="group p-2 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 md:hidden"
                 title={t("back")}
               >
                 <ArrowLeft
@@ -119,120 +122,185 @@ export function Header({
                 />
               </button>
             )}
+
             <div className="flex items-center space-x-3">
               <div className="p-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg float-animation">
-                <Sparkle size={24} className="text-white" />
+                <Sparkle size={20} className="text-white md:w-6 md:h-6" />
               </div>
-              <div>
-                <h1 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+              <div className="hidden sm:block">
+                <h1 className="text-lg md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                   {title}
                 </h1>
-                <div className="h-1 w-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mt-1"></div>
+                <div className="h-1 w-8 md:w-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mt-1"></div>
               </div>
             </div>
           </div>
 
-          {/* Right side - Theme, Language and Logout */}
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={toggleLanguage}
-              className="group p-2.5 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
-              title={
-                language === "pt"
-                  ? t("switchToEnglish")
-                  : t("switchToPortuguese")
-              }
-            >
-              <Translate
-                size={20}
-                className="text-gray-600 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
-              />
-            </button>
+          {/* Right side - Controls and hamburger */}
+          <div className="flex items-center space-x-2">
+            {/* Desktop navigation */}
+            {showNavigationButtons && (
+              <nav className="hidden lg:flex space-x-2">
+                {navigationItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = isActivePath(item.path);
 
+                  return (
+                    <button
+                      key={item.path}
+                      onClick={() => navigate(item.path)}
+                      className={`
+                        group relative flex items-center space-x-2 px-4 py-2 rounded-xl font-medium text-sm
+                        transition-all duration-300 hover:scale-105 hover:shadow-lg whitespace-nowrap
+                        ${
+                          isActive
+                            ? `${item.bgColor} text-white shadow-lg`
+                            : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white shadow-md"
+                        }
+                      `}
+                    >
+                      <Icon size={16} />
+                      <span className="hidden xl:block">{item.label}</span>
+                    </button>
+                  );
+                })}
+              </nav>
+            )}
+
+            {/* Theme and Language controls */}
+            <div className="hidden sm:flex items-center space-x-2">
+              <button
+                onClick={toggleLanguage}
+                className="group p-2 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+                title={
+                  language === "pt"
+                    ? t("switchToEnglish")
+                    : t("switchToPortuguese")
+                }
+              >
+                <Translate
+                  size={18}
+                  className="text-gray-600 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+                />
+              </button>
+
+              <button
+                onClick={toggleTheme}
+                className="group p-2 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+                title={t("switchTheme")}
+              >
+                {theme === "dark" ? (
+                  <Sun
+                    size={18}
+                    className="text-yellow-500 group-hover:text-yellow-400 transition-colors"
+                  />
+                ) : (
+                  <Moon
+                    size={18}
+                    className="text-gray-600 group-hover:text-indigo-600 transition-colors"
+                  />
+                )}
+              </button>
+            </div>
+
+            {/* Hamburger menu button */}
             <button
-              onClick={toggleTheme}
-              className="group p-2.5 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
-              title={t("switchTheme")}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+              title="Menu"
             >
-              {theme === "dark" ? (
-                <Sun
-                  size={20}
-                  className="text-yellow-500 group-hover:text-yellow-400 transition-colors"
-                />
+              {isMobileMenuOpen ? (
+                <X size={20} className="text-gray-600 dark:text-gray-300" />
               ) : (
-                <Moon
-                  size={20}
-                  className="text-gray-600 group-hover:text-indigo-600 transition-colors"
-                />
+                <List size={20} className="text-gray-600 dark:text-gray-300" />
               )}
             </button>
 
+            {/* Desktop logout */}
             <button
               onClick={handleLogout}
-              className="group flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm font-medium"
+              className="hidden sm:flex items-center space-x-2 px-3 py-2 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm font-medium"
             >
               <SignOut
                 size={16}
                 className="text-gray-600 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors"
               />
-              <span className="text-gray-600 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+              <span className="hidden md:block text-gray-600 dark:text-gray-300">
                 {t("logout")}
               </span>
             </button>
           </div>
         </div>
 
-        {/* Navigation tabs */}
-        {showNavigationButtons && (
-          <div className="pb-4">
-            <nav className="flex space-x-2 overflow-x-auto scrollbar-hide">
-              {navigationItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = isActivePath(item.path);
+        {/* Mobile menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden pb-4 border-t border-gray-200 dark:border-gray-700 pt-4 mobile-menu-enter">
+            <nav className="space-y-2">
+              {showNavigationButtons &&
+                navigationItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = isActivePath(item.path);
 
-                return (
-                  <button
-                    key={item.path}
-                    onClick={() => navigate(item.path)}
-                    className={`
-                      group relative flex items-center space-x-3 px-6 py-3 rounded-2xl font-medium text-sm
-                      transition-all duration-300 hover:scale-105 hover:shadow-lg whitespace-nowrap
+                  return (
+                    <button
+                      key={item.path}
+                      onClick={() => {
+                        navigate(item.path);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`
+                      w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-sm
+                      transition-all duration-300 hover:scale-[1.02]
                       ${
                         isActive
-                          ? `${item.bgColor} text-white shadow-lg shadow-${
-                              item.color.split("-")[1]
-                            }-500/25`
+                          ? `${item.bgColor} text-white shadow-lg`
                           : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white shadow-md"
                       }
                     `}
-                  >
-                    {/* Active indicator */}
-                    {isActive && (
-                      <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full shadow-lg"></div>
-                    )}
+                    >
+                      <Icon size={20} />
+                      <span>{item.label}</span>
+                      {isActive && (
+                        <div className="ml-auto w-2 h-2 bg-white rounded-full"></div>
+                      )}
+                    </button>
+                  );
+                })}
 
-                    <Icon
-                      size={20}
-                      className={`
-                        transition-all duration-300
-                        ${
-                          isActive
-                            ? "text-white"
-                            : "text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200"
-                        }
-                      `}
-                    />
-                    <span className="font-semibold">{item.label}</span>
+              {/* Mobile controls */}
+              <div className="pt-2 border-t border-gray-200 dark:border-gray-700 space-y-2">
+                <button
+                  onClick={() => {
+                    toggleLanguage();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 shadow-md font-medium text-sm"
+                >
+                  <Translate size={20} />
+                  <span>{language === "pt" ? "English" : "Português"}</span>
+                </button>
 
-                    {/* Hover effect */}
-                    {!isActive && (
-                      <div
-                        className={`absolute inset-0 rounded-2xl ${item.bgColor} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-                      ></div>
-                    )}
-                  </button>
-                );
-              })}
+                <button
+                  onClick={() => {
+                    toggleTheme();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 shadow-md font-medium text-sm"
+                >
+                  {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                  <span>
+                    {theme === "dark" ? t("lightMode") : t("darkMode")}
+                  </span>
+                </button>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 shadow-md font-medium text-sm hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+                >
+                  <SignOut size={20} />
+                  <span>{t("logout")}</span>
+                </button>
+              </div>
             </nav>
           </div>
         )}

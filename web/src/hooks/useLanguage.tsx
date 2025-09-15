@@ -243,6 +243,10 @@ const translations: Translations = {
     pt: "Modo Escuro",
     en: "Dark Mode",
   },
+  lightMode: {
+    pt: "Modo Claro",
+    en: "Light Mode",
+  },
   viewPerformance: {
     pt: "Ver Desempenho",
     en: "View Performance",
