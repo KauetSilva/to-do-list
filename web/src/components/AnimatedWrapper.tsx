@@ -10,7 +10,8 @@ interface AnimatedWrapperProps {
     | "slide-right"
     | "bounce"
     | "rotate"
-    | "page";
+    | "page"
+    | "stagger";
   timeout?: number;
   delay?: number;
   className?: string;

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Task,
   TaskNote,
   TimeEntry,
-  CreateNoteDTO,
   CreateTimeEntryDTO,
 } from "../types";
 import { toast } from "react-toastify";
