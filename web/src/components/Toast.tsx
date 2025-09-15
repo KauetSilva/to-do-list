@@ -22,45 +22,45 @@ export const Toast: React.FC<ToastProps> = ({
   const getContainerStyles = () => {
     switch (type) {
       case "success":
-        return "bg-green-100 text-green-800 border-green-200";
+        return "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border-green-200 dark:border-green-700";
       case "error":
-        return "bg-red-100 text-red-800 border-red-200";
+        return "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-200 dark:border-red-700";
       case "warning":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        return "bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 border-yellow-200 dark:border-yellow-700";
       case "info":
-        return "bg-blue-100 text-blue-800 border-blue-200";
+        return "bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-700";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-700";
     }
   };
 
   const getCloseButtonStyles = () => {
     switch (type) {
       case "success":
-        return "bg-green-200 text-green-800 hover:bg-green-300";
+        return "bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 hover:bg-green-300 dark:hover:bg-green-700";
       case "error":
-        return "bg-red-200 text-red-800 hover:bg-red-300";
+        return "bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 hover:bg-red-300 dark:hover:bg-red-700";
       case "warning":
-        return "bg-yellow-200 text-yellow-800 hover:bg-yellow-300";
+        return "bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 hover:bg-yellow-300 dark:hover:bg-yellow-700";
       case "info":
-        return "bg-blue-200 text-blue-800 hover:bg-blue-300";
+        return "bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 hover:bg-blue-300 dark:hover:bg-blue-700";
       default:
-        return "bg-gray-200 text-gray-800 hover:bg-gray-300";
+        return "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600";
     }
   };
 
   const getActionButtonStyles = () => {
     switch (type) {
       case "success":
-        return "text-green-800 bg-green-200 hover:bg-green-300";
+        return "text-green-800 dark:text-green-200 bg-green-200 dark:bg-green-800 hover:bg-green-300 dark:hover:bg-green-700";
       case "error":
-        return "text-red-800 bg-red-200 hover:bg-red-300";
+        return "text-red-800 dark:text-red-200 bg-red-200 dark:bg-red-800 hover:bg-red-300 dark:hover:bg-red-700";
       case "warning":
-        return "text-yellow-800 bg-yellow-200 hover:bg-yellow-300";
+        return "text-yellow-800 dark:text-yellow-200 bg-yellow-200 dark:bg-yellow-800 hover:bg-yellow-300 dark:hover:bg-yellow-700";
       case "info":
-        return "text-blue-800 bg-blue-200 hover:bg-blue-300";
+        return "text-blue-800 dark:text-blue-200 bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 dark:hover:bg-blue-700";
       default:
-        return "text-gray-800 bg-gray-200 hover:bg-gray-300";
+        return "text-gray-800 dark:text-gray-200 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600";
     }
   };
 

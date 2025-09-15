@@ -99,7 +99,7 @@ export function Register() {
 
       if (response.ok) {
         // Armazenar o token retornado pela API
-        localStorage.setItem("@todo:token", data.token);
+        localStorage.setItem("token", data.token);
         showToast("success", t("signUpSuccess"));
 
         // Curto delay para permitir que o usuário veja o toast de sucesso
@@ -124,7 +124,7 @@ export function Register() {
   }
 
   return (
-    <div className="min-h-screen h-screen w-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 overflow-hidden relative">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 overflow-hidden relative">
       {/* Toast Container */}
       <div className="fixed top-4 right-4 z-50 flex flex-col space-y-2 w-80 max-w-[90%]">
         {toasts.map((toast) => (
@@ -175,7 +175,7 @@ export function Register() {
           onClick={toggleLanguage}
           className="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300"
           title={
-            language === "pt" ? "Switch to English" : "Mudar para Português"
+            language === "pt" ? t("switchToEnglish") : t("switchToPortuguese")
           }
         >
           <Translate

@@ -195,8 +195,8 @@ const translations: Translations = {
     en: "View all",
   },
   tasks: {
-    pt: "tarefas",
-    en: "tasks",
+    pt: "Tarefas",
+    en: "Tasks",
   },
   monthlyOverview: {
     pt: "Visão Mensal",
@@ -210,10 +210,7 @@ const translations: Translations = {
     pt: "nos últimos 30 dias",
     en: "in the last 30 days",
   },
-  productivityScore: {
-    pt: "Pontuação de Produtividade",
-    en: "Productivity Score",
-  },
+
   basedOnActivity: {
     pt: "com base na sua atividade",
     en: "based on your activity",
@@ -402,6 +399,386 @@ const translations: Translations = {
   actions: {
     pt: "Ações",
     en: "Actions",
+  },
+  // TaskList translations
+  tasksLabel: {
+    pt: "Tarefas",
+    en: "Tasks",
+  },
+  newSprint: {
+    pt: "Nova Sprint",
+    en: "New Sprint",
+  },
+  newTask: {
+    pt: "Nova Tarefa",
+    en: "New Task",
+  },
+  totalTasksLabel: {
+    pt: "Total de Tarefas",
+    en: "Total Tasks",
+  },
+  totalPointsLabel: {
+    pt: "Total de Pontos",
+    en: "Total Points",
+  },
+  allFilter: {
+    pt: "Todas",
+    en: "All",
+  },
+  priorityLabel: {
+    pt: "Prioridade",
+    en: "Priority",
+  },
+  pointsLabel: {
+    pt: "Pontos",
+    en: "Points",
+  },
+  dateLabel: {
+    pt: "Data",
+    en: "Date",
+  },
+  tasksCount: {
+    pt: "de",
+    en: "of",
+  },
+  tasksLabelPlural: {
+    pt: "tarefas",
+    en: "tasks",
+  },
+  createdOn: {
+    pt: "Criada em",
+    en: "Created on",
+  },
+  completedOn: {
+    pt: "Concluída em",
+    en: "Completed on",
+  },
+  sprintLabel: {
+    pt: "Sprint",
+    en: "Sprint",
+  },
+  deleteTaskLabel: {
+    pt: "Excluir tarefa",
+    en: "Delete task",
+  },
+  noTasksCreated: {
+    pt: "Nenhuma tarefa criada",
+    en: "No tasks created",
+  },
+  noTasksFoundFilter: {
+    pt: "Nenhuma tarefa encontrada",
+    en: "No tasks found",
+  },
+  createFirstTask: {
+    pt: "Crie sua primeira tarefa para começar a organizar seu trabalho.",
+    en: "Create your first task to start organizing your work.",
+  },
+  noTasksMatchFilter: {
+    pt: "Não há tarefas que correspondam aos filtros selecionados.",
+    en: "No tasks match the selected filters.",
+  },
+  createTaskButton: {
+    pt: "Criar Tarefa",
+    en: "Create Task",
+  },
+  pointsSummary: {
+    pt: "Resumo de Pontos",
+    en: "Points Summary",
+  },
+  completedPointsLabel: {
+    pt: "Pontos Concluídos",
+    en: "Completed Points",
+  },
+  pendingPointsLabel: {
+    pt: "Pontos Pendentes",
+    en: "Pending Points",
+  },
+  generalProgress: {
+    pt: "Progresso Geral",
+    en: "General Progress",
+  },
+  // Modal translations
+  newTaskTitle: {
+    pt: "Nova Tarefa",
+    en: "New Task",
+  },
+  newSprintTitle: {
+    pt: "Nova Sprint",
+    en: "New Sprint",
+  },
+  titleLabel: {
+    pt: "Título",
+    en: "Title",
+  },
+  descriptionLabel: {
+    pt: "Descrição",
+    en: "Description",
+  },
+  taskLinkLabel: {
+    pt: "Link da Tarefa (opcional)",
+    en: "Task Link (optional)",
+  },
+  selectSprint: {
+    pt: "Selecionar Sprint",
+    en: "Select Sprint",
+  },
+  // Sprint translations
+  sprintName: {
+    pt: "Nome da Sprint",
+    en: "Sprint Name",
+  },
+  startDate: {
+    pt: "Data de Início",
+    en: "Start Date",
+  },
+  endDate: {
+    pt: "Data de Fim",
+    en: "End Date",
+  },
+  // Confirmation messages
+  confirmDeleteTask: {
+    pt: "Tem certeza que deseja excluir esta tarefa?",
+    en: "Are you sure you want to delete this task?",
+  },
+  // Error messages
+  errorLoadingData: {
+    pt: "Erro ao carregar dados",
+    en: "Error loading data",
+  },
+  errorToggleTask: {
+    pt: "Erro ao alternar tarefa",
+    en: "Error toggling task",
+  },
+  errorDeleteTask: {
+    pt: "Erro ao excluir tarefa",
+    en: "Error deleting task",
+  },
+  errorCreateTask: {
+    pt: "Erro ao criar tarefa",
+    en: "Error creating task",
+  },
+  errorCreateSprint: {
+    pt: "Erro ao criar sprint",
+    en: "Error creating sprint",
+  },
+  // SprintBoard translations
+  sprints: {
+    pt: "Sprints",
+    en: "Sprints",
+  },
+  activeSprint: {
+    pt: "Sprint Ativa",
+    en: "Active Sprint",
+  },
+  progress: {
+    pt: "Progresso",
+    en: "Progress",
+  },
+
+  completedPercent: {
+    pt: "% concluído",
+    en: "% completed",
+  },
+  activateSprint: {
+    pt: "Ativar Sprint",
+    en: "Activate Sprint",
+  },
+  deleteSprint: {
+    pt: "Excluir Sprint",
+    en: "Delete Sprint",
+  },
+
+  moreTasks: {
+    pt: "mais tarefas",
+    en: "more tasks",
+  },
+  noSprintsCreated: {
+    pt: "Nenhuma sprint criada",
+    en: "No sprints created",
+  },
+  createFirstSprint: {
+    pt: "Crie sua primeira sprint para começar a organizar suas tarefas.",
+    en: "Create your first sprint to start organizing your tasks.",
+  },
+  createSprint: {
+    pt: "Criar Sprint",
+    en: "Create Sprint",
+  },
+  // Sprint status translations
+  planning: {
+    pt: "Planejamento",
+    en: "Planning",
+  },
+  active: {
+    pt: "Ativa",
+    en: "Active",
+  },
+
+  cancelled: {
+    pt: "Cancelada",
+    en: "Cancelled",
+  },
+  // Confirmation messages
+  confirmDeleteSprint: {
+    pt: "Tem certeza que deseja excluir esta sprint?",
+    en: "Are you sure you want to delete this sprint?",
+  },
+  // Error messages
+  errorLoadingSprints: {
+    pt: "Erro ao carregar sprints",
+    en: "Error loading sprints",
+  },
+  errorActivateSprint: {
+    pt: "Erro ao ativar sprint",
+    en: "Error activating sprint",
+  },
+  errorDeleteSprint: {
+    pt: "Erro ao excluir sprint",
+    en: "Error deleting sprint",
+  },
+  // DailyReport translations
+  dailyReport: {
+    pt: "Relatório Diário",
+    en: "Daily Report",
+  },
+  previousDay: {
+    pt: "(Dia Anterior)",
+    en: "(Previous Day)",
+  },
+  generateReport: {
+    pt: "Gerar Relatório",
+    en: "Generate Report",
+  },
+  summary: {
+    pt: "Resumo",
+    en: "Summary",
+  },
+  completedTasks: {
+    pt: "Tarefas Concluídas",
+    en: "Completed Tasks",
+  },
+  sprintProgress: {
+    pt: "Progresso da Sprint",
+    en: "Sprint Progress",
+  },
+  points: {
+    pt: "pontos",
+    en: "points",
+  },
+  completedAt: {
+    pt: "Concluída às",
+    en: "Completed at",
+  },
+  noTasksCompleted: {
+    pt: "Nenhuma tarefa foi concluída nesta data.",
+    en: "No tasks were completed on this date.",
+  },
+  percentCompleted: {
+    pt: "% concluído",
+    en: "% completed",
+  },
+
+  averageCompletionTime: {
+    pt: "Tempo Médio de Conclusão",
+    en: "Average Completion Time",
+  },
+  productivityScore: {
+    pt: "Pontuação de Produtividade",
+    en: "Productivity Score",
+  },
+  excellent: {
+    pt: "Excelente",
+    en: "Excellent",
+  },
+  canImprove: {
+    pt: "Pode melhorar",
+    en: "Can improve",
+  },
+  highConcentration: {
+    pt: "Alto nível de concentração",
+    en: "High concentration level",
+  },
+  canImproveFocus: {
+    pt: "Pode melhorar o foco",
+    en: "Can improve focus",
+  },
+  excellentWorkPace: {
+    pt: "Excelente ritmo de trabalho",
+    en: "Excellent work pace",
+  },
+  moderatePace: {
+    pt: "Ritmo moderado",
+    en: "Moderate pace",
+  },
+  pendingTasks: {
+    pt: "Tarefas Pendentes",
+    en: "Pending Tasks",
+  },
+  noDataForDate: {
+    pt: "Nenhum dado disponível para esta data",
+    en: "No data available for this date",
+  },
+  tryAnotherDate: {
+    pt: "Tente selecionar outra data",
+    en: "Try selecting another date",
+  },
+  noCompletedTasks: {
+    pt: "Nenhuma tarefa concluída neste dia",
+    en: "No tasks completed on this day",
+  },
+  noPendingTasks: {
+    pt: "Nenhuma tarefa pendente neste dia",
+    en: "No pending tasks on this day",
+  },
+  // Header translations
+  back: {
+    pt: "Voltar",
+    en: "Back",
+  },
+
+  switchToEnglish: {
+    pt: "Mudar para Inglês",
+    en: "Switch to English",
+  },
+  switchToPortuguese: {
+    pt: "Mudar para Português",
+    en: "Switch to Portuguese",
+  },
+  // Priority translations
+  low: {
+    pt: "Baixa",
+    en: "Low",
+  },
+  medium: {
+    pt: "Média",
+    en: "Medium",
+  },
+  high: {
+    pt: "Alta",
+    en: "High",
+  },
+  urgent: {
+    pt: "Urgente",
+    en: "Urgent",
+  },
+  // Optional label
+  optional: {
+    pt: "opcional",
+    en: "optional",
+  },
+  // Date labels
+  startDateLabel: {
+    pt: "Data de Início",
+    en: "Start Date",
+  },
+  endDateLabel: {
+    pt: "Data de Fim",
+    en: "End Date",
+  },
+  // Error messages
+  errorValidatingToken: {
+    pt: "Erro ao validar token:",
+    en: "Error validating token:",
   },
 };
 

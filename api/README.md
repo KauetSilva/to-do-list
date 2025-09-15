@@ -5,6 +5,10 @@ $ yarn install
 ```
 
 ```bash
+$ npx prisma migrate deploy
+```
+
+```bash
 $ yarn prisma generate
 ```
 
