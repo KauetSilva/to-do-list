@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "author": "Clecio Kauet Silva de Araújo",
+  "homepage": ".",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
